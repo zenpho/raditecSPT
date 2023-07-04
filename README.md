@@ -3,9 +3,8 @@
 This is an attempt to document the Spectralis SPT data format. 
 
 ## What has been documented so far?
-- SPT appears to use several different data structures.
 - <a href="SPT_types.h">SPT_types.h</a> defines some known data structures.
-- Other files in the repository provide C functions for reading, parsing, and writing SPT data.
+- C functions for reading, parsing, and writing SPT data are provided.
 
 ## Why are you doing this?
 Spectralis OS v1.04k provides two isolated sequencers with different feature sets.  I want to
