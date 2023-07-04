@@ -1,10 +1,10 @@
 # raditecSPT
-This is an attempt to document the Spectralis SPT data format. 
 <img src="spectralis-audiofanzine.jpg" alt="front panel of the spectralis, from audiofanzine">
+This is an attempt to document the Spectralis SPT data format. 
 
 ## What has been documented so far?
-- SPT appears to be a format with several data structures inside
-- <a href="SPT_types.h">SPT_types.h</a> defines some known data structures in the SPT format.
+- SPT appears to use several different data structures.
+- <a href="SPT_types.h">SPT_types.h</a> defines some known data structures.
 - Other files in the repository provide C functions for reading, parsing, and writing SPT data.
 
 ## Why are you doing this?
