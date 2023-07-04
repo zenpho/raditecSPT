@@ -1,7 +1,7 @@
 # raditecSPT
 The Radikal Technologies Spectralis is a "performance-oriented music instrument with multiple sequencer-sections [and] sampling engine [...] A pattern-based 17-track sequencer [for drums and] 32 track analog-style step-sequencer which not only plays notes, but can modulate most of the soundparameters of the Spectralis."
 
-<img src="spectralis-audiofanzine.jpg alt="front panel of the spectralis, from audiofanzine">
+<img src="spectralis-audiofanzine.jpg" alt="front panel of the spectralis, from audiofanzine">
 
 OS v1.04k provides two isolated sequencers with different feature sets. The Spectralis SPT data format is not published. This is an attempt to reverse engineer the format so that I can
 
