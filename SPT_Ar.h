@@ -12,14 +12,14 @@
 SPT_Ar* Ars[32];
 uint8_t ArsCount = 0;
 
-/** zero all pointers ready for SPT_Ar_parse() */
+/** zero all pointers ready for SPT_Ar_read() */
 void SPT_Ar_init()
 {
   for(int i=0; i<32; i++) Ars[i] = 0;
   ArsCount = 0;
 }
 
-/** free any memory allocated by SPT_Ar_parse() */
+/** free any memory allocated by SPT_Ar_read() */
 void SPT_Ar_cleanup()
 {
   for(int i=0; i<32; i++)
@@ -29,7 +29,7 @@ void SPT_Ar_cleanup()
   ArsCount = 0;
 }
 
-uint16_t SPT_Ar_parse(uint8_t* c)
+uint16_t SPT_Ar_read(uint8_t* c)
 {
   uint16_t* w = (uint16_t*)c;     // unsigned twobyte value
   uint16_t numBytesChunk = w[1];  // skip bytes 'A','r'

@@ -5,6 +5,12 @@
  
  see SPT_types.h for description of SPT chunks
  
+ TODO - we might add SPT_Il_parse() func here to
+ interpret and parse raw IlGs IlAs IlMs IlPs and
+ raw IlGVData IlAVdata values since the meaning and
+ relevance of modulation, step, depth, gate, and 
+ probability values are all context dependent.
+
  efficiency and clarity of code in SPT_Il.h is not good!
  my excuse is that "this is a first draft of a hack tool
  to reverse engineer the SPT format" but that's a weak
@@ -25,7 +31,8 @@
 
  Il chunks seem to have sub types 'G', 'A', 'M', 'P'.
  This is complicated further due to variable length data
- (called "vData" here) used only sometimes by 'G' and 'A'
+ (called "vData" here) used only by 'G' and 'A' types
+ for per-step sequence data
 */
 SPT_Il_G*        IlGs[32];
 SPT_Il_A*        IlAs[32];
@@ -35,7 +42,7 @@ SPT_Il_P*        IlPs[32];
 SPT_Il_vData*    IlGVData[32];
 SPT_Il_vData*    IlAVData[32];
 
-/** zero all pointers ready for SPT_Il_parse() */
+/** zero all pointers ready for SPT_Il_read() */
 void SPT_Il_init()
 {
   for(int i=0; i<32; i++) IlGs[i] = 0;
@@ -45,7 +52,7 @@ void SPT_Il_init()
   for(int i=0; i<32; i++) IlAVData[i] = 0;
 }
 
-/** free any memory allocated by SPT_Il_parse() */
+/** free any memory allocated by SPT_Il_read() */
 void SPT_Il_cleanup()
 {
   for(int i=0; i<32; i++)
@@ -61,7 +68,7 @@ void SPT_Il_cleanup()
 }
 
 /** parse data and allocate memory, see also SPT_Il_cleanup() */
-uint16_t SPT_Il_parse(uint8_t* c)
+uint16_t SPT_Il_read(uint8_t* c)
 {
   uint16_t* w = (uint16_t*)c;    // skip bytes 'I','l'
   uint16_t numBytesChunk = w[1]; // unsigned twobyte value, num bytes for this chunk

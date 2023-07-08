@@ -17,7 +17,7 @@ void SPT_Sa_init()
   memset( &Sa, 0, sizeof(Sa) );
 }
 
-uint16_t SPT_Sa_parse(uint8_t* c)
+uint16_t SPT_Sa_read(uint8_t* c)
 {
   uint16_t* w = (uint16_t*)c;    // unsigned twobyte value, consistently observed to be 834 bytes
   uint16_t numBytesChunk = w[1]; // skip bytes 'S','a'

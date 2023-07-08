@@ -16,7 +16,7 @@ void SPT_Pm_init()
   memset( &Pm, 0, sizeof(Pm) );
 }
 
-uint16_t SPT_Pm_parse(uint8_t* c)
+uint16_t SPT_Pm_read(uint8_t* c)
 {
   uint16_t* w = (uint16_t*)c;     // unsigned twobyte value
   uint16_t numBytesChunk = w[1];  // skip bytes 'P','m'

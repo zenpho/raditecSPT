@@ -135,11 +135,11 @@ typedef struct
   // NB typically variable data follows these values - see numBytesVData
 } SPT_Il_G;
 
-/** variable data for Il  */
+/** variable data for Il */
 typedef struct
 {
-  uint16_t type;
-  uint16_t pos;
+  uint16_t a;
+  uint16_t b;
 } SPT_Il_vData;
 
 /** config data for Il type A = Analog, automation */
@@ -147,19 +147,93 @@ typedef struct
 {
   SPT_Il_head h;
 
-  uint8_t  target;                  // target type for this line
-                                    //   DSyn > Play > Note
-                                    //   0x00=Kick ... 0x0a=Perc3,
-                                    //   0x0c=Dsyn1 ... 0x0e=Dsyn2,
-                                    //   0x90=Ext MIDI ch1 ... 0x9f=Ext MIDI ch16
+  uint8_t  linelen;                 // number of steps on this line
+                                    // this only controls display/playback loop behaviour
+                                    // the trigger data is stored in variable length "vData"
+
+  uint8_t  mystery1[2];             // ?
+
+  uint8_t  lineres;                 // ticks per step
+                                    // 0=192th  1=96th   2=64th   3=48th
+                                    // 4=32th   5=24th   6=16th   7=8th
+                                    // 8=6th    9=4th    10=3th   11=2th
+                                    // 13=1bar  14=2bar  15=3bar  16=4bar
+                                    // 17=6bar  18=8bar  19=12bar
+  
+  uint8_t  targetPG[2];             // target <param><group>
+                                    // some configs set nonzero additional "targetSD" bytes
+                                    // 0xa3, 0x28 means ext midi (see targetSD)
+                                    // 0xa4, 0x28 means dsyn (see targetSD)
+  
+                                    // these configs zero the additional "targetSD" bytes
+                                    // 0xbf, 0x28 means asyn tgrp 1
+                                    // 0xc0, 0x28 means asyn tgrp 2
+                                    // 0xc1, 0x28 means asyn tgrp 3
+                                    // 0xa4, 0x2a means asyn mm cutoff
+                                    // 0x71, 0x2a means asyn lp cutoff exp
+  
+                                    // 0x76, 0x0e means filterbank bypass
+                                    // 0x6e, 0x11 means filterbank band lpf
+                                    // 0x96, 0x11 means filterbank band 1
+                                    // 0xbe, 0x11 means filterbank band 2
+                                    // 0xe6, 0x11 means filterbank band 3
+                                    // 0x0e, 0x12 means filterbank band 4
+                                    // 0x36, 0x12 means filterbank band 5
+                                    // 0x5e, 0x12 means filterbank band 6
+                                    // 0x86, 0x12 means filterbank band 7
+                                    // 0x5e, 0x12 means filterbank band 8
+                                    // 0xd6, 0x0d means filterbank band hpf
   
   uint8_t  glide;                   // portamento glide rate
-  uint8_t  pitch;                   // trigger midi note num
-  uint8_t  len;                     // trigger gate duration
-  uint8_t  transposing;             // if set, pitches are transposing
-  uint8_t  grooving;                // if set, timing is grooving
   
-  uint8_t  mysteryData[16];         // ?
+  uint8_t  mystery2;                // ?
+  
+  uint8_t  editgate;                // edit gate length and type
+                                    // 8th, 4th, 2th, 1, 2, 4, etc
+                                    // DECAY, HARD, PULSE, SOFT, ATTACK
+
+  uint8_t  editveldep;              // edit velocity, depth
+                                    // 0 to 126 (when depth, displayed as -63 to +63)
+  
+  uint8_t  targetSD[2];             // some configurations leave these bytes zeroed
+                                    // when "targetPG" set {0xa4, 0x28} this means "dsyn"
+                                    // and "targetSD" set nonzero as below for "which dsyn"
+                                    // {0x00, 0x00} means kick
+                                    // {0x01, 0x00} means snare
+                                    // {0x02, 0x00} means clhh
+                                    // {0x03, 0x00} means ophh
+                                    // {0x04, 0x00} means clap
+                                    // {0x05, 0x00} means tomhi
+                                    // {0x06, 0x00} means midhi
+                                    // {0x07, 0x00} means lowhi
+                                    // {0x08, 0x00} means perc1
+                                    // {0x09, 0x00} means perc2
+                                    // {0x0a, 0x00} means perc3
+                                    // {0x0b, 0x00} seems UNUSED
+                                    // {0x0c, 0x00} means dsyn1
+                                    // {0x0d, 0x00} means dsyn1
+                                    // {0x0e, 0x00} means dsyn3
+                                    //
+                                    // when "targetPG" set {0xa3, 0x28} this means "ext MIDI"
+                                    // and "targetSD" set nonzero as below for "ext MIDI NOTE"
+                                    // {0x90, 0x00} .. {0x9f, 0x00} means note ch1 .. ch16
+                                    // i.e. first "targetSD" byte statusbyte for midi note on
+                                    //      second "targetSD" byte zeroed
+                                    //
+                                    // when "targetPG" set {0xa3, 0x28} this means "ext MIDI"
+                                    // and "targetSD" set nonzero as below for "ext MIDI CTL"
+                                    // {0xb0, 0xNN} .. {0xbf, 0xNN} means cc control ch1 .. ch16
+                                    // i.e. first "targetSD" byte statusbyte for midi ctl
+                                    //      second "targetSD" byte NN for desired ctl number
+                                    //      1 modwheel, 2 breath, etc
+  
+  uint8_t  editpitch;               // edit pitch
+  
+  uint8_t  mystery3;                // ?
+  
+  uint8_t  configtransp;            // config transposing, revpoint, grooving
+  
+  uint8_t  mystery4[12];            // ?
   
   // NB typically variable-length data follows these values - see numBytesVData
 } SPT_Il_A;

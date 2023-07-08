@@ -16,7 +16,7 @@ void SPT_Ec_init()
   memset( &Ec, 0, sizeof(Ec) );
 }
 
-uint16_t SPT_Ec_parse(uint8_t* c)
+uint16_t SPT_Ec_read(uint8_t* c)
 {
   uint16_t* w = (uint16_t*)c;     // unsigned twobyte value
   uint16_t numBytesChunk = w[1];  // skip bytes 'E','c'

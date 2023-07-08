@@ -20,7 +20,7 @@ void SPT_tP_init()
   memset( &tP, 0, sizeof(tP) );
 }
 
-uint16_t SPT_tP_parse(uint8_t* c)
+uint16_t SPT_tP_read(uint8_t* c)
 {
   uint16_t numBytesChunk = sizeof(tP);
   uint16_t ofs = 2; // skip bytes 't','P'
