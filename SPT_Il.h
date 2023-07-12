@@ -8,19 +8,8 @@
  TODO - we might add SPT_Il_parse() func here to
  interpret and parse raw IlGs IlAs IlMs IlPs and
  raw IlGVData IlAVdata values since the meaning and
- relevance of modulation, step, depth, gate, and 
+ relevance of modulation, step, depth, gate, and
  probability values are all context dependent.
-
- efficiency and clarity of code in SPT_Il.h is not good!
- my excuse is that "this is a first draft of a hack tool
- to reverse engineer the SPT format" but that's a weak
- excuse. i'm not too proud of the clunkiness here :(
- 
- probably the first priority is to clean up storage with
- void pointers to void* Ils and simply cast to one of
- struct SPT_Il_G or _A or _M or _P - avoiding the need
- for multiple arrays of each separate datatype... it
- would also be good to avoid the macro fwrite nonsense!
 */
 #ifndef SPT_Il_h
 #define SPT_Il_h
