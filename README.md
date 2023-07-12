@@ -24,4 +24,6 @@ A typical workflow might involve
 We're a little way off that goal right now sadly. **Can you help?**
 
 ## What is the Spectralis?
-The Radikal Technologies Spectralis is a "performance-oriented music instrument with multiple sequencer-sections [and] sampling engine [...] A pattern-based 17-track sequencer [for drums and] 32 track analog-style step-sequencer which not only plays notes, but can modulate most of the soundparameters of the Spectralis."
+From the manual: Radikal Technologies Spectralis is a "performance-oriented music instrument with multiple sequencer-sections [and] sampling engine [...] A pattern-based 17-track sequencer [for drums and] 32 track analog-style step-sequencer which not only plays notes, but can modulate most of the soundparameters of the Spectralis."
+
+Spectralis OS v1.04k provides a motif sequencer for 11 drum parts (plus 3 monophonic triggers, and 3 polyphonic triggers). A second isolated step-sequencer can be configured to automate parameters and trigger internal/external MIDI parts with 24 (not 32) tracks.
