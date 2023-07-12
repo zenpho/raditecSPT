@@ -70,8 +70,8 @@ typedef struct {
  Several subtypes of Il chunks seem to exist
  'G' = Groove, drum parts seem to be 162 bytes.
  'A' = Analog, automation seem to be 36 bytes.
- 'M' = ?midi, mute? seem to be 34 bytes.
- 'P' = ?part, play? seem to be 164 bytes.
+ 'M' = ?mono, asyn tgroup?, seem to be 34 bytes.
+ 'P' = ?poly, dsyn part?, seem to be 164 bytes.
  
  This is complicated further due to variable length data
  (called "vData" here) which may be stored following the
@@ -89,28 +89,43 @@ typedef struct
   uint16_t numBytesVData;           // num bytes of variable data
 
   char     type;                    // A = analog, automation
-                                    // G = groove, drum parts
-                                    // M = ?midi, mute?
-                                    // P = ?part, play?
+                                    // G = groove, drum part
+                                    // M = ?mono, asyn tgroup?
+                                    // P = ?poly, dsyn part?
   uint8_t  counter;
   char     name[8];                 // 8 bytes incl. null termination
+  
+  uint16_t linelen;                 // number of steps on this line
+                                    // this only affects display/playback loop behaviour
+                                    // the trigger data is stored in variable length "vData"
+
+  uint8_t  mystery1;                // ?
+
+  uint8_t  editres;                 // ticks per step
+                                    // only affects display/playback behaviour
+                                    // trigger data is stored as 48ppqn variable length "vData"
+                                    // 0=192th  1=96th   2=64th   3=48th
+                                    // 4=32th   5=24th   6=16th   7=8th
+                                    // 8=6th    9=4th    10=3th   11=2th
+                                    // 13=1bar  14=2bar  15=3bar  16=4bar
+                                    // 17=6bar  18=8bar  19=12bar
 } SPT_Il_head;
 
-/** config data for Il type M = ?midi, mute? */
+/** config data for Il type M = ?mono, asyn tgroup? */
 typedef struct
 {
   SPT_Il_head h;
   uint8_t  mysteryData[20];         // ?
 } SPT_Il_M;
 
-/** config data for Il type P = ?part, play? */
+/** config data for Il type P = ?poly, dsyn part? */
 typedef struct
 {
   SPT_Il_head h;
   uint8_t  mysteryData[150];        // ?
 } SPT_Il_P;
 
-/** config data for Il type G = Groove, drum parts */
+/** config data for Il type G = Groove, drum part */
 typedef struct
 {
   SPT_Il_head h;
@@ -118,11 +133,7 @@ typedef struct
   // ?? = CONT.   ?? = ONCE.  ?? = RPT.
   // ?? = VOI.    ?? = TRG.
   
-  uint8_t  linelen;                 // steps on this line
-  uint8_t  lineres;                 // tick-type per step
-                                    // 6=16, 7=12th, 8=8th, 9=, 10=
-  
-  uint8_t  mystery1[140];           // ? groove voice params ?
+  uint8_t  mystery1[138];           // ? groove voice params ?
   
   uint8_t  pitch;                   // midi note num
   uint8_t  editplus;                // edit +XX
@@ -146,19 +157,6 @@ typedef struct
 typedef struct
 {
   SPT_Il_head h;
-
-  uint8_t  linelen;                 // number of steps on this line
-                                    // this only controls display/playback loop behaviour
-                                    // the trigger data is stored in variable length "vData"
-
-  uint8_t  mystery1[2];             // ?
-
-  uint8_t  lineres;                 // ticks per step
-                                    // 0=192th  1=96th   2=64th   3=48th
-                                    // 4=32th   5=24th   6=16th   7=8th
-                                    // 8=6th    9=4th    10=3th   11=2th
-                                    // 13=1bar  14=2bar  15=3bar  16=4bar
-                                    // 17=6bar  18=8bar  19=12bar
   
   uint8_t  targetPG[2];             // target <param><group>
                                     // some configs set nonzero additional "targetSD" bytes
